@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "es6",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "noEmitHelpers": false,
+    "sourceMap": false,
+    "watch": true,
+    "baseUrl": "./",
+    "outDir": "bin/js",
+    "importHelpers": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "paths": {
+      "tslib": [
+        "node_modules/tslib/tslib.js"
+      ]
+    },
+    "lib": [
+      "es5",
+      "dom",
+      "es2015.promise"
+    ]
+  },
+  "include": [
+    "src",
+    "libs"
+  ]
+}
