@@ -1,11 +1,13 @@
 # WorkerPromise
-多线程Promise
 
-Web Worker 需要在单独的js文件实现？
-通过`WorkerPromise`你无需分开文件书写代码!
+> `web Worker` 需要隔离代码？多线程代码更难维护？
+通过`WorkerPromise`你无需隔离编写代码!
+就像在同一个上下文中编写普通方法和类一样简单。
 
-## 例子
-你完全可以将多线程代码和单线程代码混合书写
+## 包装Worker方法
+
+- 通过`WorkerMethodPromise`包装器你可以轻松将方法转为子线程执行
+
 ```typescript Main.ts
 //定义线程函数
 //cb为执行结束回调
@@ -16,5 +18,40 @@ function worker1(cb: (msg?: string) => void){
 }
 
 //执行线程
-WorkerPromise(worker1).then((msg) => console.log(msg));
+WorkerMethodPromise(worker1).then((msg) => console.log(msg));
+```
+
+## 包装Worker类
+- 通过`WorkerClassPromise`包装器你可以轻松将类转为子线程执行
+
+``` typescript
+class Worker1 extends WorkerFile {
+
+	private wait(time: number) {
+		return new Promise(reslove => {
+			setTimeout(reslove, time)
+		})
+	}
+
+	public exec1(a: number, b: number) {
+		let res = a + b;
+		return Promise.resolve(res);
+	}
+
+	public async exec2() {
+		await this.wait(2000);
+		return Promise.resolve(200);
+	}
+}
+
+let worker = WorkerClassPromise(Worker1);
+
+worker.exec1(3, 6).then(v => {
+	console.log(v);
+});
+
+worker.exec2().then(v => {
+	console.log(v);
+});
+
 ```

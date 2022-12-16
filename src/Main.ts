@@ -1,12 +1,44 @@
-import { WorkerPromise } from "./WorkerPromise";
+import { WorkerFile, WorkerMethodPromise, WorkerClassPromise } from "./WorkerPromise";
 
 class Main {
 	constructor() {
-		WorkerPromise((cb: (msg: string) => void) => {
+		WorkerMethodPromise((cb: (data?) => void) => {
 			setTimeout(() => {
 				cb("this is end");
-			}, 2000);
-		}).then((msg) => console.log(msg))
+			}, 1000);
+		}).then((msg) => console.log(msg));
+
+		let worker = WorkerClassPromise(Worker1);
+
+		worker.exec1(3, 6).then(v => {
+			console.log(v);
+		});
+
+		worker.exec2().then(v => {
+			console.log(v);
+		});
+
+		worker.destory
 	}
 }
+
+class Worker1 extends WorkerFile {
+
+	private wait(time: number) {
+		return new Promise(reslove => {
+			setTimeout(reslove, time)
+		})
+	}
+
+	public exec1(a: number, b: number) {
+		let res = a + b;
+		return Promise.resolve(res);
+	}
+
+	public async exec2() {
+		await this.wait(2000);
+		return Promise.resolve(200);
+	}
+}
+
 new Main();
